@@ -2,7 +2,7 @@
 
 ## Reporting Security Issues
 
-If you believe you have found a security vulnerability in an Alto Swift package, please report
+If you believe you have found a security vulnerability in an Alto package, please report
 it to us through coordinated disclosure.
 
 > [!IMPORTANT]
