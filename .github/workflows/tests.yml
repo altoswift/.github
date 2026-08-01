@@ -1,0 +1,45 @@
+name: Tests (Swift)
+
+on:
+  workflow_call:
+    inputs:
+      swift-versions:
+        description: JSON array of Swift versions to test against, as a string (e.g. '["6.2", "6.3"]').
+        type: string
+        required: false
+        default: '["6.3"]'
+      os:
+        description: Runner to test on.
+        type: string
+        required: false
+        default: 'macos-latest'
+      test-args:
+        type: string
+        required: false
+        default: ''
+
+jobs:
+  tests:
+    name: "Tests (Swift ${{ matrix.swift-version }})"
+    runs-on: ${{ inputs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        swift-version: ${{ fromJSON(inputs.swift-versions) }}
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Setup Swift ${{ matrix.swift-version }}"
+        uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: ${{ matrix.swift-version }}
+
+      - name: "Swift version"
+        run: swift --version
+
+      - name: "Run tests"
+        env:
+          TEST_ARGS: ${{ inputs.test-args }}
+        run: swift test $TEST_ARGS
